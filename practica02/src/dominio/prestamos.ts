@@ -43,6 +43,12 @@ export function prestar(m: Mostrador, libroId: string, socio: string, hoy: Date)
     return prestamo;
 }
 
+export function estadoDe(p: Prestamo, hoy: Date): EstadoPrestamo {
+  if (p.devueltoEn !== undefined) return 'devuelto';
+
+  return hoy > p.venceEn ? 'vencido' : 'activo';
+}
+
 export function multaDe(p: Prestamo, estado: EstadoPrestamo, hoy: Date): number{
     const referencia = p.devueltoEn ?? hoy;
 

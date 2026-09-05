@@ -1,5 +1,5 @@
 import { cargarCatalogo } from "./catalogo.js";
-import { disponiblesDe, multaDe, prestar, type Mostrador } from "./dominio/prestamos.js";
+import { disponiblesDe, multaDe, estadoDe, prestar, type Mostrador } from "./dominio/prestamos.js";
 import { LibroNoEncontradoError, SinEjemplaresError } from "./dominio/tipos.js";
 import { pedirOpcion, pedirTexto } from "./entrada.js";
 
@@ -64,42 +64,44 @@ async function hacerPrestamo(m: Mostrador, hoy: Date): Promise<void> {
 }
 
 async function main(): Promise<void> {
-    const {libros, descartados} = cargarCatalogo('datos/catalogo.json');
-    
-    console.log('\n --MOSTRADOR BIBLIOTECA --');
-    console.log(`Se cargaron ${libros.length} libros del catalogo\n`);
+    const { libros, descartados } = cargarCatalogo('datos/catalogo.json');
 
-    if(descartados > 0) {
-        console.log(`Se descartaron ${descartados} entradas invalidas del catalogo.\n`);
+    console.log( '\n ---- MOSTRADOR DE LABIBLIIOTECA ----');
+    console.log(`Se cargaron ${libros.length} libros del catálogo.\n`); 
+
+    if (descartados > 0) {
+        console.log(`Se descartaron ${descartados} entradas inválidas del catálogo por venir mal formados.\n`);
     }
 
     const hoy = new Date();
-    const m: Mostrador = {libros,prestamos: []};
-
+    const m: Mostrador = { libros, prestamos: [] };
+    
     for (;;) {
-        const elegido = await pedirOpcion('Seleccione una opcion:', OPCIONES);
+        const elegido = await pedirOpcion('Seleccione una opción:', OPCIONES);
 
-        if(elegido === undefined) {
-            console.log('No se selecciono una opcion valida. Intente de nuevo.');
+        if (elegido === undefined || !esOpcion(elegido)) { // FALTABA ESTA VALIDACION, SIN ELLA EL PROGRAMA FALLA, RECUERDEN LAS VALIDACIONES POR NARROWING.
+            console.log('No se seleccionó una opción válida. Intente de nuevo.');
             return;
         }
 
         switch (elegido) {
             case 'prestar':
-                await hacerPrestamo(m,hoy);
+                await hacerPrestamo(m, hoy);
                 break;
             case 'catalogo':
                 verCatalogo(m);
                 break;
             case 'prestamos':
-                verPrestamos(m,hoy);
+                verPrestamos(m, hoy);
                 break;
             case 'salir':
                 console.log('Saliendo del programa.');
                 return;
-            default:
-                const _exhaustivo : never = elegido;
-                throw new Error(`Opcion no manejada: ${_exhaustivo}`);
+            default: {
+                const _exhaustivo: never = elegido;
+                throw new Error(`Opción no manejada: ${_exhaustivo}`);
+            }
+                
         }
     }
 }
