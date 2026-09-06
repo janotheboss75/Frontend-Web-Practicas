@@ -43,3 +43,5 @@ export function cargarCatalogo(ruta: string): CatalogoCargado {
 
     return {libros, descartados: posibles.length - libros.length};
 }
+
+

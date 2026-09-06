@@ -1,6 +1,6 @@
 import { LibroNoEncontradoError, SinEjemplaresError, type EstadoPrestamo, type Libro, type Prestamo } from "./tipos.js";
 
-export const DIAS_DE_PRESTAMO = 14;
+export const DIAS_DE_PRESTAMO = 14; 
 
 export const MULTA_POR_DIA = 5;
 
