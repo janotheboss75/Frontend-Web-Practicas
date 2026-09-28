@@ -22,5 +22,6 @@
   Error 409 (Conflict): Significa que el servidor entiende la petición perfectamente, pero procesarla choca con el estado actual del sistema.
 
 7.  ¿por qué cambió el código de estado de esa última petición?
+    Por que ya se desocupo un lugar del horario y ya hay cupo para el miembro con id 3
 
 
