@@ -1,32 +1,42 @@
+### Practica 6 - Inscripciones al gimnasio (SOLUCION)
+###
+### COMO SE USA:
+###   1. Extension "REST Client" (humao.rest-client) en VS Code.
+###   2. npm run start:dev
+###   3. Clic en "Send Request" arriba de cada peticion.
+###
+### OJO: el orden importa. El horario 1 tiene cupoMaximo = 2, asi que las
+### peticiones 1, 2 y 3 hay que correrlas EN ORDEN para ver el 409.
+### Todo vive en memoria: si reinicias el servidor, vuelve a cero.
 
 @host = http://localhost:3000
 
-### 1. Crear miembros
-POST {{host}}/miembros
+### 1. Primera inscripcion  ->  201 + header Location
+POST {{host}}/inscripciones
 Content-Type: application/json
 
-{ "nombre": "Alejandro", "correo": "janovaldezhillo@gmail.com", "membresia": "PREMIUM" }
+{ "horarioId": 1, "miembroId": 1 }
 
 
-### 2. Modificar miembros
-PUT {{host}}/miembros
+### 2. Segunda inscripcion, se llena el cupo  ->  201
+POST {{host}}/inscripciones
 Content-Type: application/json
 
-{ "id": 4, "nombre": "Jano", "membresia": "PLATINUM" }
+{ "horarioId": 1, "miembroId": 2 }
 
 
-### Consultar miembros
-GET {{host}}/miembros
+### 3. REGLA 1 - tercera inscripcion  ->  409 cupo lleno
+POST {{host}}/inscripciones
 Content-Type: application/json
 
-### Consultar miembro por id
-GET {{host}}/miembros/2
+{ "horarioId": 1, "miembroId": 3 }
+
+
+### 4. REGLA 2 - el miembro 1 otra vez  ->  409 duplicada
+POST {{host}}/inscripciones
 Content-Type: application/json
 
-### 4. Eliminar miembros
-DELETE {{host}}/miembros/10
-Content-Type: application/json
-
+{ "horarioId": 1, "miembroId": 1 }
 
 
 ### 5. Un horario que no existe  ->  404

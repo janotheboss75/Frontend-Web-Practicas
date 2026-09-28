@@ -1,27 +1,14 @@
-1. ¿qué pasaría si el módulo no quedara registrado en la raíz?
-  el framework de NestJS ignorará por completo esa parte de tu código al levantar la aplicación.
+1. ¿por qué esta interfaz no menciona Express, NestJS ni memoria?
+  Por que esta interfaz lo unico que hace es definir los metodos para el quien la implementa, no ocupa nada mas
 
-2. ¿por qué los métodos del repositorio devuelven promesas si los datos van a estar en memoria?
-  Los métodos del repositorio devuelven promesas, incluso cuando los datos están en memoria, para mantener la abstracción de la base de datos y preparar tu código para el futuro.
+2. ¿qué palabra de esa clase es la que promete cumplir la interfaz del paso anterior? 
+  la de implements
 
-  el día que conectes una base de datos mediante un ORM como TypeORM o Prisma, vas a tener que reescribir toda tu lógica de servicios para agregar async y await. Al tipar el retorno como Promise desde el principio, cuando cambies la fuente de datos, tu capa de servicio quedará intacta.
+4. ¿por qué este archivo no sabe qué es una petición HTTP?
+  Por que este es el que maneja las reglas de negocio, solo eso, ya en el controller, se le injecta el service para ahora si realizar las peticiones HTTP
 
-3. ¿qué error apareció al cambiar a la interfaz, y por qué la clase sí se había resuelto sola?
-   ERROR [ExceptionHandler] UnknownDependenciesException [Error]: Nest can't resolve dependencies of the InscripcionesService (?).
+5. ¿por qué el Service se inyecta sin token en el Controller, y el repositorio sí necesita uno?
+  Por que el service si es una clase que el compilador de typescript no borra, en cambio el repository es una interfaz de typescript que si se borra.
 
-   Las clases son valores reales que se conservan cuando el código TypeScript se compila a JavaScript, al detectar que pides una clase concreta, el framework la reconoce inmediatamente, la utiliza como un identificador automático (token) y la inyecta sin que tengas que configurar nada más.
-
-   Cuando NestJS intenta leer los parámetros de tu constructor en tiempo de ejecución, la interfaz ya no existe; en su lugar, el framework solo detecta un Object genérico.
-
-4. ¿por qué el servicio necesita un token para el repositorio, pero el controlador no lo necesita para el servicio?
-  El servicio necesita un token manual para el repositorio porque depende de una interfaz, mientras que el controlador no lo necesita para el servicio porque depende de una clase concreta.
-
-6. ¿cuál es la diferencia entre un 400 y un 409?
-  Error 400 (Bad Request): Significa que el servidor no entiende la petición debido a un problema en el formato o en la validación mínima de los datos de entrada.
-
-  Error 409 (Conflict): Significa que el servidor entiende la petición perfectamente, pero procesarla choca con el estado actual del sistema.
-
-7.  ¿por qué cambió el código de estado de esa última petición?
-    Por que ya se desocupo un lugar del horario y ya hay cupo para el miembro con id 3
-
-
+6. ¿qué prueba, en los hechos, que agregar Miembros no rompió nada de Inscripciones?
+  al ejecutar las peticiones HTTP hacia las rutas originales de /inscripciones, el servidor sigue devolviendo los mismos códigos de estado (como 200 OK o 201 Created) y las mismas respuestas de datos JSON que entregaba en la Práctica 6.
