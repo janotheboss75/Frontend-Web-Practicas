@@ -1,10 +1,17 @@
-# Practica 16
+## Practica 16
 
-### ¿Por que se usa un contexto y no props para la sesion?
-Se usa contexto porque la sesion necesita estar disponible en cualquier componente sin tener que hacer *prop drilling* (que tenga que pasar por props a treves de cada nivel de la jerarquia de componentes). El contexto permite compartir **usuario**, **entrar**, **registrar** y **salir** diretamente.
+1.- ¿Por qué se usa un Contexto de React y no props para manejar la sesión del usuario?
+- Porque la información de la sesión son un estado global que necesitan componentes distribuidos en distintos niveles de la aplicación. Si se intentara compartir mediante props tendríamos que pasar los datos manualmente con componentes intermedios que no los necesitan. El Contexto permite inyectar y consumir la sesión directamente donde se requiera.
 
-### ¿Que pasa si un componente usa la sesion fuera de un proveedor?
-Si `useSesion()` se usa fuera de `<ProveedorSesion>`, lanza un error: `useSesion() tiene que usarse dentro de <ProveedorSesion>`
+2.- ¿Qué pasa si un componente intenta usar el hook de sesión fuera de su Provider correspondiente?
+- Lanzará un error de React indicando que el contexto es undefined. Esto ocurre porque el componente está intentando consumir un estado global que no está envuelto ni disponible en el DOM por el proveedor del contexto.
 
-### ¿Donde se guarda el token y que riesgo tiene ese lugar?
-El token se guarda en **localStorage**. El riesgo es que **localStorage** es accesible para cualquier script en la pagina, lo que lo hace vulnerable a ataques XSS que podrian robar el token.
+3.- ¿Dónde se guarda el token JWT y qué riesgo de seguridad tiene ese almacenamiento?
+- El token se almacena en el localStorage del navegador. Y el principal riesgo de seguridad es que cualquier script malicioso que logre inyectarse en la aplicación mediante un ataque XSS puede leer y extraer el contenido del localStorage sin problemas comprometiendo las credenciales y el acceso a la API.
+
+4.- ¿Cómo se comprueba que el token viaja correctamente en las peticiones y qué muestra jwt.io?
+- En la pestaña Red: al realizar una petición protegida hacia la API, se puede ver la cabecera HTTP de la petición y verificar la presencia del encabezado Authorization: Bearer <token>.
+Y al decodificar el token en la plataforma jwt.io se puede inspeccionar.
+
+
+Wilber Valdez Quintero.

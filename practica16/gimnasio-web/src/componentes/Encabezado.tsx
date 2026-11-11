@@ -17,7 +17,7 @@ export function Encabezado() {
       <div className="barra__interior">
         <Link to="/" className="barra__marca">
           <img src="/logo.svg" alt="" />
-          Gimnasio Titanes
+          Gimnasio Will
         </Link>
 
         <nav>
