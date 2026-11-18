@@ -7,6 +7,7 @@ export default function PaginaEntrar() {
   const { entrar } = useSesion();
   const navegar = useNavigate();
   const desde = (useLocation().state as { desde?: string } | null)?.desde ?? '/clases';
+    const destino = typeof desde === 'string' && /^\/planes\/\d+$/.test(desde) ? desde : '/planes';
 
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
